@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tracing a storage link fault</title><meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/theme.css"></head>
+<body>
+<nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic33-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic33-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic34-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic34-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic35-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic35-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a></div></nav>
+<main class="doc">
+<h1>Tracing a storage link fault</h1>
+<p><strong>Machine:</strong> my media and file server, an older Intel Z97 board running Proxmox (a virtualisation host that runs several virtual machines on one computer). It holds six SATA drives on the board's single SATA controller, and its graphics card is handed directly to a Windows virtual machine.</p>
+<p><strong>When:</strong> early September 2026, closed on 9 September 2026.</p>
+<h2>1. Symptom</h2>
+<p>Two hard drives, a Seagate 8 TB and a Seagate 4 TB, were logging interface CRC errors. A CRC error (cyclic redundancy check) means data arrived over the cable between the drive and the board damaged, so it had to be sent again. At the same time the Linux kernel log showed SATA link messages: the operating system was seeing the connection to the drives misbehave.</p>
+<p>Nothing had been lost, but a storage link that keeps erroring is a fault waiting to become data loss, so I treated it as a live fault until proven otherwise.</p>
+<h2>2. What I checked, in order</h2>
+<p>I changed one thing at a time and wrote down the time of each change, so every result could be tied to a single cause.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What I did</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Swapped the SATA data cables</td>
+<td>Errors did not stop</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Checked power: every drive on its own straight power lead from the power supply, no Molex to SATA adapters, leads spread across different lines</td>
+<td>Power wiring clean</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Forced the affected SATA ports to slower link speeds (3.0 Gbps, then 1.5 Gbps) with a kernel boot setting, 3 September</td>
+<td>Did not cure it</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Turned the IOMMU off, 5 September, 09:07</td>
+<td>Counters stopped moving</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Turned the IOMMU back on in passthrough mode, 5 September, 10:46</td>
+<td>Counters still frozen: the fix</td>
+</tr>
+</tbody>
+</table></div>
+<p>The usual first suspect for CRC errors is the cable, which is why step 1 came first. When new cables did not help, a hardware fault on the link became less likely and I started looking at software between the drives and memory.</p>
+<h2>3. How the cause was found</h2>
+<p>The IOMMU (input output memory management unit) is the part of the processor that controls how devices such as disk controllers reach system memory. It is what lets a virtual machine own a real device, like my graphics card, safely. It also sits in the path of every transfer the SATA controller makes.</p>
+<p>From the moment the IOMMU was out of the path, the error counters never moved again. A test log I wrote at 09:56 on 5 September, inside that window, already showed the two drives' counters at 193 and 53, the same values they hold today.</p>
+<p>That pointed at the IOMMU, but I could not simply leave it off: the graphics card passthrough to the Windows virtual machine needs it. The answer was passthrough mode, which keeps the IOMMU available for the virtual machines while the host's own devices, including the SATA controller, reach memory without going through its translation.</p>
+<h2>4. The fix</h2>
+<p>One kernel boot setting on the Proxmox host:</p>
+<pre><code>intel_iommu=on iommu=pt
+</code></pre>
+<p>The <code>iommu=pt</code> part is the cure. It was installed on 5 September 2026 at 10:46. The slower link speed settings from step 3 are no longer on the boot line.</p>
+<h2>5. Proof it was fixed</h2>
+<p>Error counters are lifetime totals, so a non zero number on its own proves nothing. What matters is whether the number moves.</p>
+<p>I ran an overnight watch that read the CRC counters of the three drives that carried any count 140 times between 22:36 and 10:12 the next morning. That window included a live 63 GB file copy and about twelve hours of normal running. Every one of the 140 readings returned exactly the same three values (193, 2 and 53), which I checked by sorting the readings and confirming only one unique line remained.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure over the watch</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Drive power on hours</td>
+<td>+12</td>
+</tr>
+<tr>
+<td>CRC error counters</td>
+<td>+0</td>
+</tr>
+</tbody>
+</table></div>
+<p>I closed the case on 9 September with a written rule for reopening it: a counter that moves, not the presence of the old historical count.</p>
+<h2>6. Lessons</h2>
+<ul>
+<li><strong>Watch the change, not the total.</strong> A CRC counter of 193 looks alarming, but it was history. The test is whether it grows under load.</li>
+<li><strong>One change at a time, with timestamps.</strong> Because each step was logged with its time, a log written at 09:56 could be placed exactly between two changes, and that is what identified the cause.</li>
+<li><strong>The obvious suspect is not always the cause.</strong> Cables are the right first check for CRC errors, but here the cable swap was not the fix.</li>
+<li><strong>Know the cost of a boot setting change.</strong> This machine later lost its remote console. A bad edit to the boot line could then only be recovered by someone standing at it, so I recorded that the setting must not be touched without a console attached.</li>
+</ul>
+</main>
+</body></html>

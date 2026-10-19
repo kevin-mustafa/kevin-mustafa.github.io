@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Graphics card servers under full load: test report</title><meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/theme.css"></head>
+<body>
+<nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic29-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic29-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic30-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic30-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic31-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic31-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a></div></nav>
+<main class="doc">
+<h1>Graphics card servers under full load: test report</h1>
+<p><strong>What:</strong> measured results from running my two graphics card servers flat out on a 537 million parameter language model: how busy each card stayed, temperatures, power, the bottleneck I found and the fix.
+<strong>When:</strong> 24 to 29 September 2026.</p>
+<h2>1. The hardware</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Machine</th>
+<th>Processor</th>
+<th>Graphics cards</th>
+<th>Card power limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Server 1</td>
+<td>AMD Ryzen 9 9950X3D</td>
+<td>Two NVIDIA RTX 5080</td>
+<td>450 W each</td>
+</tr>
+<tr>
+<td>Server 2</td>
+<td>Intel Core i9-12900K</td>
+<td>One NVIDIA RTX 4080</td>
+<td>380 W</td>
+</tr>
+</tbody>
+</table></div>
+<p>A 10 Gbit/s fibre link joins the servers. During every test all fans and the liquid cooler pump ran at full, and a temperature guard read every card every 10 seconds, ready to stop the job. Afterwards I put the fans back on quiet curves.</p>
+<p><strong>How I measured:</strong> <code>nvidia-smi</code> sampled every card each second; a profiler recorded what each card was doing, millisecond by millisecond; a one second sampler logged processor, memory, disk and network. Throughput is tokens (word pieces) processed per second.</p>
+<h2>2. Each server on its own (24 September)</h2>
+<p>Three hour training runs, each server alone:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Server 1 (two RTX 5080)</th>
+<th>Server 2 (RTX 4080)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Throughput</td>
+<td>41,399 tokens a second</td>
+<td>20,502 tokens a second</td>
+</tr>
+<tr>
+<td>Hottest card</td>
+<td>64 and 66 C</td>
+<td>77 C</td>
+</tr>
+<tr>
+<td>Peak power</td>
+<td>678 W (both cards plus processor)</td>
+<td>329 W (card)</td>
+</tr>
+<tr>
+<td>Heat or power throttling</td>
+<td>none</td>
+<td>none</td>
+</tr>
+</tbody>
+</table></div>
+<p>Stepping the power limits up (Server 1: 360 to 450 W; Server 2: 320 to 380 W) did not change speed: the cards never drew near their limits.</p>
+<h2>3. All three cards on one job: the bottleneck (27 and 28 September)</h2>
+<p>Next I trained one model across all three cards. Each training step ends with every card sending its gradients (the corrections it has worked out) to the others and receiving the total, so all cards stay in step.</p>
+<p><strong>Result: three cards ran slower than Server 1 alone.</strong> 24,703 tokens a second, against 41,610 for Server 1 by itself at the same settings.</p>
+<p>The card's own "busy" counter read 100 percent the whole time, but it counts waiting as busy. Power told the truth: median card power was only 97, 109 and 156 W. The profiler showed why:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Share of each step (measured)</th>
+<th>Card doing real work</th>
+<th>Card waiting on the gradient exchange</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First attempt</td>
+<td>33 to 40%</td>
+<td>60 to 67%</td>
+</tr>
+<tr>
+<td>After tuning (16 bit gradients, larger steps, work balanced to each card's speed)</td>
+<td>72 to 74%</td>
+<td>25 to 28%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Every step pushed 2.15 GB of gradients over the single link, which ran at line rate (peaks of 9.8 Gbit/s) each time. Tuning doubled throughput to 52,020 tokens a second, but like for like that was only 1.08 times Server 1 alone.</p>
+<p><strong>Not the bottleneck (measured):</strong> processors (Server 1 at 6.5 to 12.1 percent), system memory (7 to 11 percent used), drives (no reads: the data sat in memory), PCIe card slots, card power, and the fibre itself (light levels 11.2 dB inside the warning limit, zero errors or drops). The limit was the 10 Gbit/s standard.</p>
+<h2>4. The fix: stop the cards waiting on the network</h2>
+<p>I changed the design so each card trains its own copy of the model, and every 30 seconds the copies are averaged into one shared model in the background. The cards no longer stop each step to talk over the network.</p>
+<p>I tested it with a two hour acceptance run against six set pass marks, with deliberate faults: killing a card's job, and freezing the averaging process for 60 seconds. The first run passed five; the miss was a pause caused by my own profiler, so I reran without it (29 September).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Clean rerun, measured</th>
+<th>Server 1 card 0</th>
+<th>Server 1 card 1</th>
+<th>Server 2 card</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Busy, whole job</td>
+<td>99.41%</td>
+<td>98.96%</td>
+<td>98.88%</td>
+</tr>
+<tr>
+<td>Lowest 10 minute window</td>
+<td>99.60%</td>
+<td>99.20%</td>
+<td>99.19%</td>
+</tr>
+<tr>
+<td>Speed against the card's own best</td>
+<td>97.58%</td>
+<td>97.71%</td>
+<td>97.35%</td>
+</tr>
+<tr>
+<td>Median power</td>
+<td>330 W</td>
+<td>295 W</td>
+<td>323 W</td>
+</tr>
+<tr>
+<td>Longest pause between steps</td>
+<td>0.23 s</td>
+<td>1.13 s</td>
+<td>1.39 s</td>
+</tr>
+</tbody>
+</table></div>
+<p>All six marks passed. Killed jobs were training again after 18.03 s and 13.46 s gaps; during the 60 second freeze no card waited.</p>
+<p>The shared model also reached the same quality as Server 1 alone 1.34 to 1.60 times sooner, and finished better (held out loss, the error on unseen data, 1.2392 against 1.2899).</p>
+<h2>5. Temperatures under load (measured peaks)</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Server 1 card 0 (chip / hot spot)</th>
+<th>Server 1 card 1</th>
+<th>Server 2 card</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Three cards, tuned</td>
+<td>56 / 65.3 C</td>
+<td>58 / 65.7 C</td>
+<td>63 / 77.0 C</td>
+</tr>
+<tr>
+<td>Server 1 alone</td>
+<td>57 / 67.2 C</td>
+<td>61 / 69.6 C</td>
+<td>idle</td>
+</tr>
+<tr>
+<td>Server 2 alone</td>
+<td>idle</td>
+<td>idle</td>
+<td>68 / 82.0 C</td>
+</tr>
+<tr>
+<td>Two hour rerun</td>
+<td>up to 61.0 / 70.4 C (both cards)</td>
+<td></td>
+<td>70.0 / 85.0 C</td>
+</tr>
+</tbody>
+</table></div>
+<p>The guard's stop limits were 87 C (chip) and 105 C (hot spot). It never triggered.</p>
+<h2>6. Not measured</h2>
+<p>Power at the wall, the fibre modules under load (read once at idle), and why Server 1 card 1 clocks 3 to 4 percent lower and runs warmer than card 0.</p>
+<h2>7. Lessons</h2>
+<ul>
+<li><strong>Utilisation counters can mislead.</strong> "100 percent busy" included waiting. Power draw and a profiler gave the real picture.</li>
+<li><strong>Find the one full resource.</strong> Everything was mostly idle except the network link, so faster cards or higher power limits would have bought nothing.</li>
+<li><strong>Prove a fix with pass marks and injected faults,</strong> not with one good run.</li>
+</ul>
+</main>
+</body></html>

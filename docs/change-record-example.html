@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Change record: network drives moved back to Samba file sharing</title><meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/theme.css"></head>
+<body>
+<nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic25-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic25-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic26-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic26-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic27-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic27-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a></div></nav>
+<main class="doc">
+<h1>Change record: network drives moved back to Samba file sharing</h1>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date</td>
+<td>28 September 2026</td>
+</tr>
+<tr>
+<td>System</td>
+<td>Media server: a Proxmox virtualisation host running a Windows 11 virtual machine and a small Linux container that serves files with Samba (the standard Windows file sharing protocol on Linux)</td>
+</tr>
+<tr>
+<td>Change type</td>
+<td>Normal change (planned, tested, with a rollback)</td>
+</tr>
+<tr>
+<td>Requested by</td>
+<td>The owner (me)</td>
+</tr>
+<tr>
+<td>Approved by</td>
+<td>The owner (me)</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Closed, successful</td>
+</tr>
+</tbody>
+</table></div>
+<h2>1. Change summary</h2>
+<p>Replace the four Windows drive letters (M:, T:, N:, G:) that pointed at host folders through <strong>virtiofs</strong> (a way to hand host folders straight into a virtual machine) with ordinary <strong>Samba network drives</strong> on the same letters. Harden the Samba server, mount the host's data disks by their permanent IDs, and make the drives reconnect by themselves after any restart.</p>
+<h2>2. Reason for change</h2>
+<p>All four network drives disappeared from Windows. I needed a permanent fix, not a reconnect.</p>
+<p>What I found when I investigated:
+- The drives were not Samba drives at all. They were virtiofs drives. They worked for twelve days, and still worked after the host updates. From the next morning onwards the Windows side started, hung and never made a drive, with no error. A Windows Update restart then killed all four virtiofs processes on the host, which stay dead until the virtual machine is fully stopped and started. I could not identify why the Windows side began hanging.
+- <strong>A security problem beside it:</strong> virtiofs ran as the root (administrator) user on the host with no user mapping. That gave Windows root level write access to the folder holding my <strong>backup repository</strong>, the only other copy of my photographs.</p>
+<h2>3. Risk and impact</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Users affected</td>
+<td>One (me). Drives unavailable during the work.</td>
+</tr>
+<tr>
+<td>Risk to data</td>
+<td>Low. No data moved. Only configuration files changed, each copied first.</td>
+</tr>
+<tr>
+<td>Main risks</td>
+<td>A wrong line in the disk mount file (<code>/etc/fstab</code>) stopping the host from booting; Windows refusing the stricter Samba settings; the backup folder being exposed again.</td>
+</tr>
+<tr>
+<td>Controls</td>
+<td><code>nofail</code> on every mount so a missing disk cannot stop the boot; <code>findmnt --verify</code> to check the mount file before any reboot; old copies of every changed file kept; the virtual machine's identity settings compared before and after every step.</td>
+</tr>
+<tr>
+<td>Benefit</td>
+<td>Drives that survive restarts; the backup folder no longer reachable from Windows.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>4. Plan</h2>
+<ol>
+<li><strong>Samba server (container):</strong> require SMB version 3 (was 2), make message signing mandatory, keep the named user and no guest access, and hide the backup folder from every share now and in any future share (<code>veto files</code> in the global section). Keep the old file as <code>smb.conf.before-change</code>.</li>
+<li><strong>Host:</strong> change the four data disks in <code>/etc/fstab</code> from mounting by label to mounting <strong>by UUID</strong> (a permanent ID), with each disk's serial number written as a comment beside its line. Add <code>nofail</code> to all five lines. Check with <code>findmnt --verify</code>, then <code>systemctl daemon-reload</code>. Keep the old file as <code>fstab.before-change</code>.</li>
+<li><strong>Start order:</strong> the file sharing container starts first, the Windows virtual machine second, 30 seconds later.</li>
+<li><strong>Windows:</strong> disable and stop the five virtiofs services. Map M:, T:, N: and G: over Samba as persistent drives, using the credential already saved in Windows Credential Manager (no password typed or stored anywhere new). Add a scheduled task that runs at every sign-in and whenever the network connects: it waits up to about three minutes for the server, keeps drives that work, re-maps any that are missing, and writes a log.</li>
+<li><strong>Virtual machine settings:</strong> remove the four virtiofs devices.</li>
+</ol>
+<h2>5. Rollback plan</h2>
+<ul>
+<li>Samba: copy <code>smb.conf.before-change</code> back and restart Samba.</li>
+<li>Host mounts: copy <code>fstab.before-change</code> back, <code>systemctl daemon-reload</code>.</li>
+<li>Virtual machine: add the four virtiofs devices back with one <code>qm set</code> command (recorded in the change notes), then re-enable the Windows services.</li>
+<li>Trigger for rollback: the host fails to mount a data disk, or Windows cannot connect to Samba with the new settings.</li>
+</ul>
+<h2>6. Test</h2>
+<p>Three rounds, each harder than the last. Pass means all four drives come back <strong>by themselves</strong> with no action from me except signing in.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Round</th>
+<th>What</th>
+<th>Drives after sign-in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Windows restart</td>
+<td>4 of 4 back by themselves</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Full virtual machine stop and start (virtiofs devices now removed)</td>
+<td>4 of 4 back by themselves</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Full host reboot</td>
+<td>4 of 4 back by themselves</td>
+</tr>
+</tbody>
+</table></div>
+<p>In every round I checked: all four drives connected, their sizes correct (14,902 / 7,450 / 5,544 / 3,724 GB), <strong>the backup folder not visible</strong>, and the connection using SMB 3.1.1 with AES-128-GMAC signing. After the host reboot, every checked line on the host matched the before picture: disks mounted by UUID on the same serials, the mount file, no failed services, Samba settings, the virtual machine's identity settings and the backup folder's entry.</p>
+<h2>7. Approval</h2>
+<p>Approved by the owner (me) before work started, after reading the plan and rollback above. The host reboot in round 3 was a separate go-ahead given at that point.</p>
+<h2>8. Result</h2>
+<p><strong>Successful.</strong> The drives came back in my open Windows session during the work and passed all three test rounds.</p>
+<p>Follow-ups written down, not done as part of this change:
+1. Windows has no automatic sign-in, so the network drives only appear after I sign in. Automatic sign-in would store my Windows password on the machine, so I left it off on purpose.
+2. The four old virtiofs folder mappings still exist on the host but are used by nothing. One of them would expose the backup folder again if ever attached to a virtual machine. Recommendation: delete at least that one.
+3. One more share has no drive letter, because I never used it from Windows.</p>
+<p>Records updated: the server's build record, the task record and this change record. Old copies of every changed configuration file are kept beside the new ones.</p>
+</main>
+</body></html>
