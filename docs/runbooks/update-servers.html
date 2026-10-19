@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Runbook: update the graphics card servers</title><meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/theme.css"></head>
+<body>
+<nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic45-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic45-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic46-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic46-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic47-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic47-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a></div></nav>
+<main class="doc">
+<h1>Runbook: update the graphics card servers</h1>
+<p><strong>Machines:</strong> Server 1 (two graphics cards) and Server 2 (one graphics card), Ubuntu Linux, NVIDIA graphics driver.
+<strong>Last run:</strong> 13 October 2026, both servers, every check passed.</p>
+<h2>Purpose</h2>
+<p>Bring both training servers up to date with security and package updates <strong>without moving the NVIDIA driver or the machine learning software stack</strong>, prove the NVIDIA driver module exists for any new kernel (the core of the operating system) <strong>before</strong> rebooting into it, and finish with the same measured baseline as before. Firmware, BIOS updates, a full Ubuntu release upgrade and restarting training are <strong>not</strong> part of this runbook.</p>
+<h2>Before you start</h2>
+<p><strong>Safety</strong>
+- Training is paused only on a deliberate decision. Put a HOLD marker in every card's queue folder first, so no training job starts during the work.
+- Server 1 goes first as the "canary": if something breaks, it breaks on one server, not both.
+- Restart with a normal reboot over SSH. <strong>Never cold power off Server 2.</strong></p>
+<p><strong>What you need</strong>
+- SSH (secure shell) access to both servers with passwordless <code>sudo</code>.
+- The remote console for each server (keyboard, video and mouse over the network), in case a server does not come back on its own.
+- A folder for evidence: every command's output gets saved with a timestamp.</p>
+<h2>Steps (Server 1 first, then Server 2)</h2>
+<ol>
+<li><strong>Inventory, read only.</strong> Save the current kernel, the list of held packages, the list of packages waiting to upgrade, the NVIDIA and machine learning library versions, the network link speeds, the boot order and the fan state. Then run a dry run:
+   <code>sudo apt-get -s dist-upgrade</code>
+   <strong>Expect:</strong> no packages removed. <strong>Check:</strong> what it would change besides packages. On my last run the dry run showed it would also replace <code>dkms</code> (the tool that rebuilds the NVIDIA module for each kernel) with NVIDIA's own version in place of Ubuntu's. I chose to hold it.</li>
+<li><strong>Set holds, refresh and simulate again.</strong>
+   <code>sudo apt-mark hold dkms
+   sudo apt-get update
+   sudo apt-get -s full-upgrade</code>
+   <strong>Server 2 only:</strong> the signed NVIDIA module for any newer kernel needed a newer driver than the one I run. So on Server 2 I also hold the kernel packages:
+   <code>sudo apt-mark hold linux-generic linux-image-generic linux-headers-generic</code>
+   <strong>Expect:</strong> 0 to remove, the NVIDIA packages kept back. <strong>If not:</strong> any removal, or any NVIDIA package in the upgrade list, means stop and find out why.</li>
+<li><strong>Run the upgrade as its own background service</strong>, so a dropped SSH connection cannot kill it halfway:
+   <code>sudo systemd-run --unit=apt-full-upgrade /bin/bash ~/update/upgrade.sh</code>
+   The script logs the held packages before and after, runs <code>apt-get -y full-upgrade</code> keeping my existing config files, and writes the exit code. <strong>Expect:</strong> <code>apt-get exit 0</code>, the held list the same before and after. On my last run it took under a minute on each server. <strong>If it fails:</strong> read the log and do not reboot.</li>
+<li><strong>Prove before the reboot (read only).</strong> Check that:
+   - <code>dkms status</code> shows the NVIDIA module installed for the new kernel;
+   - the module file's version stamp matches the new kernel;
+   - the new kernel's start-up image (initrd) exists;
+   - the boot menu's first entry is the new kernel;
+   - no training service was stopped or started by the upgrade.</li>
+</ol>
+<p><strong>Rollback trigger:</strong> no NVIDIA module for the new kernel. Do not reboot into it. Set the boot menu default to the kernel that is running now, run <code>update-grub</code>, hold the kernel packages and write down why.
+5. <strong>Reboot over SSH.</strong>
+   <code>sudo systemctl reboot</code>
+   <strong>Expect:</strong> Server 1 back on SSH in about 40 seconds, Server 2 in about 3 minutes (slow firmware). Server 2's 10 gigabit network card can be missing on a cold start; a small boot check service then does one warm restart by itself.
+6. <strong>Re-baseline.</strong> Run the inventory again and compare it with step 1. <strong>Expect:</strong> the kernel as planned, the same NVIDIA driver version on every card, the machine learning library sees the cards, network links at 10,000 Mb/s, boot order unchanged, HOLD still in.
+   Then a short load test: <strong>set every fan and the liquid cooler pump to full first</strong>, read them back, run 20 seconds of heavy maths on each card, then set the fans back to quiet. On my last run the cards measured 121.0 and 117.1 TFLOPS on Server 1 and 104.1 TFLOPS on Server 2 (trillions of calculations per second).
+   <strong>Rollback triggers:</strong> <code>nvidia-smi</code> fails, the cards are not visible to the software, a network link below 10,000, or the server does not boot into Ubuntu.
+7. <strong>Restart check at HOLD.</strong> After two minutes of uptime, run my restart check: every service up, fans in the right mode, cards reading HOLD as expected, network link speed correct.
+8. <strong>Write it down:</strong> versions before and after, which packages were held and why, timings, and the load test numbers.</p>
+<h2>How to check it worked</h2>
+<p>Every line of the step 6 inventory matches the plan, the step 7 restart check passes on both servers, and the load test numbers are in line with the baseline taken before the update.</p>
+<h2>What to do if it fails</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSH refused or timing out for minutes after the reboot</td>
+<td>Slow firmware, a slow USB device, or the network card check doing its warm restart</td>
+<td>Watch the remote console. Wait up to about 6 minutes. Never press power again while the screen shows it booting.</td>
+</tr>
+<tr>
+<td><code>dkms status</code> does not list the new kernel</td>
+<td>The module build failed, or <code>dkms</code> changed</td>
+<td>Keep the running kernel as the default (step 4). Read the build log under <code>/var/lib/dkms/nvidia/</code>.</td>
+</tr>
+<tr>
+<td>The signed module for a new kernel wants a newer NVIDIA package</td>
+<td>The vendor rebuilt its modules for a newer driver</td>
+<td>Hold the kernel packages on that server. A newer kernel waits for a planned driver change.</td>
+</tr>
+<tr>
+<td>The cards are missing after reboot</td>
+<td>Booted into a kernel without the module</td>
+<td>Boot the previous kernel from the boot menu, make it the default, hold the new kernel, record why.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Rollback</h2>
+<p>Boot the previous kernel (from the boot menu through the remote console if needed), make it the default, hold the new kernel's packages and record why. Other packages are not rolled back, because they are security updates. A single bad package is pinned to its old version only after a deliberate decision.</p>
+<h2>What this run found</h2>
+<p>On my last run I also found that Server 2 had started and stopped several times over two days in a way my records did not show. I wrote that down as an open question, and a later job read its own logs to see how each of those boots had ended.</p>
+</main>
+</body></html>
