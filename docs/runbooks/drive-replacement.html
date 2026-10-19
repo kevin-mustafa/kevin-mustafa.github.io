@@ -2,24 +2,26 @@
 <html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Runbook: replace a drive in a mirrored pool</title><meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../../assets/theme.css"></head>
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/theme.css">
+<script src="../../assets/theme-toggle.js" defer></script></head>
 <body>
 <nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic37-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic37-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic38-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic38-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic39-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic39-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a></div></nav>
 <main class="doc">
-<h1>Runbook: replace a drive in a mirrored pool</h1>
-<p><strong>Machine:</strong> Storage server (a Proxmox virtualisation host; the storage itself is run by a TrueNAS virtual machine that owns both disk controllers).
+<p class="back"><a href="../../index.html#docs">Back to documents</a></p>
+<header class="dochead"><h1>Runbook: replace a drive in a mirrored pool</h1><div class="intro"><p><strong>Machine:</strong> Storage server (a Proxmox virtualisation host; the storage itself is run by a TrueNAS virtual machine that owns both disk controllers).
 <strong>Pool:</strong> eight 6 TB hard drives arranged as four two-way mirrors (each pair holds identical copies), managed by ZFS (the file system TrueNAS uses). The pool survives one failed drive per mirror.</p>
-<p>I have not had to replace a drive in this pool yet. This is the procedure I wrote from how I built and checked the pool, so that the first replacement is done the same careful way.</p>
-<h2>Purpose</h2>
+<p>I have not had to replace a drive in this pool yet. This is the procedure I wrote from how I built and checked the pool, so that the first replacement is done the same careful way.</p></div></header>
+<div class="docgrid"><nav class="toc" aria-label="On this page"><p class="toc-h">On this page</p><ol><li><a href="#s1">Purpose</a></li><li><a href="#s2">The one rule: serial numbers before device names</a></li><li><a href="#s3">Before you start</a></li><li><a href="#s4">Steps</a></li><li><a href="#s5">How to check it worked</a></li><li><a href="#s6">What to do if it fails</a></li><li><a href="#s7">Notes from building this pool</a></li></ol></nav><div class="docbody"><h2 id="s1">Purpose</h2>
 <p>Swap a failing or failed drive for a new one without touching the wrong drive, then confirm the pool has rebuilt its copy (ZFS calls this a "resilver") and is healthy again.</p>
-<h2>The one rule: serial numbers before device names</h2>
+<h2 id="s2">The one rule: serial numbers before device names</h2>
 <p>Linux gives drives names like <code>/dev/sda</code> and <code>/dev/sdb</code> in the order it finds them. <strong>Those names can change after a reboot, a cable change or a controller setting change.</strong> On one of my machines the same name pointed at two different drives a week apart. So:</p>
 <ul>
 <li>A drive is identified by its <strong>serial number</strong> (printed on its label, for example <code>WD-XXXXXXXX</code>), never by <code>/dev/sdX</code>.</li>
 <li>My pool records list every drive by serial and which mirror it belongs to. The <code>/dev/sdX</code> names are noted only as a convenience and are valid for one boot only.</li>
 <li><strong>Port numbers are not board labels either.</strong> The number a controller reports for a port is not proof it is the connector printed with that number. Check by eye before pulling a cable.</li>
 </ul>
-<h2>Before you start</h2>
+<h2 id="s3">Before you start</h2>
 <p><strong>Safety</strong>
 - Confirm the pool has redundancy left. If the other drive in the same mirror is also faulted, <strong>stop</strong>: pulling anything now can lose the whole mirror. Fix that first.
 - My drives are inside a standard desktop case, not hot-swap bays. Plan to shut down. Shut the TrueNAS virtual machine down first and <strong>let it finish on its own; do not force-stop it</strong> (on this server it can be slow to respond, and I wait).
@@ -30,7 +32,7 @@
 - The failing drive's serial, taken from the TrueNAS alert or <code>zpool status</code>.
 - If the new drive is second hand: expect old signatures on it. One used drive I bought still carried a member header from someone else's RAID array. ZFS refuses a disk with a foreign signature, so it has to be cleared first.
 - Check the motherboard manual for slot rules. On this board, fitting an M.2 SATA drive in one particular socket disables one of the SATA ports, which would knock a pool drive offline.</p>
-<h2>Steps</h2>
+<h2 id="s4">Steps</h2>
 <ol>
 <li><strong>Find the drive in the pool.</strong> In TrueNAS, open the pool's device list (or run <code>zpool status -v &lt;pool&gt;</code>) and note the faulted or degraded drive and its mirror.</li>
 <li><strong>Turn that into a serial number.</strong> Run the drive map script from this portfolio (<code>scripts/drive_map.py</code>) or:
@@ -54,14 +56,14 @@
 <li><strong>Watch the rebuild.</strong> <code>zpool status &lt;pool&gt;</code> shows the resilver's progress and an estimate.</li>
 <li><strong>Update the records:</strong> the new serial in the drive table, the old serial marked removed with the date and the reason.</li>
 </ol>
-<h2>How to check it worked</h2>
+<h2 id="s5">How to check it worked</h2>
 <ul>
 <li><code>zpool status &lt;pool&gt;</code> shows <strong>state: ONLINE</strong>, the resilver finished with <strong>0 errors</strong>, and the new serial in the right mirror.</li>
 <li>TrueNAS shows no active alerts.</li>
 <li>Run a scrub (a full read and check of every block): <code>zpool scrub &lt;pool&gt;</code>. It should finish with 0 errors. My pools also run a scheduled scrub every Sunday at midnight.</li>
 <li>The new drive's health record is clean.</li>
 </ul>
-<h2>What to do if it fails</h2>
+<h2 id="s6">What to do if it fails</h2>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -88,10 +90,12 @@
 </tr>
 </tbody>
 </table></div>
-<h2>Notes from building this pool</h2>
+<h2 id="s7">Notes from building this pool</h2>
 <ul>
 <li>When I created the pool I did three checks before the irreversible click: read every serial from the TrueNAS disks page, confirmed which drive went into which mirror, then ticked the destructive confirmation.</li>
 <li>Two of my drives came from the same batch and have about eight years of running hours. I kept them in different mirrors, because drives from the same batch can fail close together. Do the same with any replacement where you can.</li>
-</ul>
+</ul></div></div>
+<p class="back back-end"><a href="../../index.html#docs">Back to documents</a></p>
 </main>
+<div class="wrap"><footer><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M30 30V52A22 22 0 1 1 52 30Z" fill="var(--ds-ink)"/><path d="M36 36H58A22 22 0 0 1 36 58Z" fill="var(--ds-mark-q)"/></svg><span>A personal project, not employment. Network addresses, serial numbers, passwords and other private details are left out of this page on purpose.</span></footer></div>
 </body></html>

@@ -2,16 +2,18 @@
 <html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Runbook: safe shutdown of the graphics card servers</title><meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../../assets/theme.css"></head>
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="stylesheet" href="../../assets/theme.css">
+<script src="../../assets/theme-toggle.js" defer></script></head>
 <body>
 <nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic41-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic41-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic42-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic42-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic43-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic43-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a></div></nav>
 <main class="doc">
-<h1>Runbook: safe shutdown of the graphics card servers</h1>
-<p><strong>Machines:</strong> Server 1 (two graphics cards) and Server 2 (one graphics card), both Ubuntu Linux, both training a language model around the clock.
-<strong>Last proven:</strong> 14 October 2026, one full cycle (shut down both, boot both), every check passed.</p>
-<h2>Purpose</h2>
+<p class="back"><a href="../../index.html#docs">Back to documents</a></p>
+<header class="dochead"><h1>Runbook: safe shutdown of the graphics card servers</h1><div class="intro"><p><strong>Machines:</strong> Server 1 (two graphics cards) and Server 2 (one graphics card), both Ubuntu Linux, both training a language model around the clock.
+<strong>Last proven:</strong> 14 October 2026, one full cycle (shut down both, boot both), every check passed.</p></div></header>
+<div class="docgrid"><nav class="toc" aria-label="On this page"><p class="toc-h">On this page</p><ol><li><a href="#s1">Purpose</a></li><li><a href="#s2">How the training is set up (what you need to know first)</a></li><li><a href="#s3">Before you start</a></li><li><a href="#s4">Steps</a></li><li><a href="#s5">How to check it worked</a></li><li><a href="#s6">What to do if it fails</a></li><li><a href="#s7">Failure history (written down so it is not repeated)</a></li></ol></nav><div class="docbody"><h2 id="s1">Purpose</h2>
 <p>Turn both training servers off without losing any training work and without leaving anything behind that breaks the next boot. Every running training job must save its final checkpoint (a saved copy of the model's progress) and exit cleanly before the operating system powers off.</p>
-<h2>How the training is set up (what you need to know first)</h2>
+<h2 id="s2">How the training is set up (what you need to know first)</h2>
 <ul>
 <li>Each graphics card has its own <strong>queue folder</strong>. A small service called the <strong>runner</strong> watches that folder and starts the next training job.</li>
 <li>Two plain marker files control it:</li>
@@ -19,7 +21,7 @@
 <li><strong>FINISH</strong>: the running job saves its final checkpoint and exits with code 0 (a clean exit).</li>
 <li>Server 2 depends on a <strong>coordinator</strong> service that runs on Server 1. So the order is always: <strong>shut down Server 2 first, then Server 1. Power on Server 1 first, then Server 2.</strong></li>
 </ul>
-<h2>Before you start</h2>
+<h2 id="s3">Before you start</h2>
 <p><strong>Safety</strong>
 - Only shut down on a deliberate decision. Idle graphics cards cost money, so a stop is planned, not casual.
 - Never cut the power at the wall or hold the power button (a "cold" power off). A cold stop can lose the job's last progress and corrupt files. Always use a normal operating system shutdown.
@@ -28,7 +30,7 @@
 - A terminal with SSH (secure shell, a remote command line) access to both servers, with passwordless <code>sudo</code> for the shutdown commands.
 - The shutdown script installed on both servers, with its execute permission set.
 - The remote console for each server (a small "KVM over IP" box: keyboard, video and mouse over the network). It lets me see the screen and press the power button remotely if SSH does not come back.</p>
-<h2>Steps</h2>
+<h2 id="s4">Steps</h2>
 <ol>
 <li><strong>Check what is running.</strong> On each server, look at the last line of each card's <code>runner.log</code> and note the newest checkpoint file in each run folder. This is your "before" picture.</li>
 <li><strong>Run the shutdown script on Server 2.</strong>
@@ -46,7 +48,7 @@
 <li><strong>Confirm Server 1 is off.</strong> No ping reply.</li>
 <li><strong>Write it down.</strong> Record the time, each job's exit code and its final checkpoint name.</li>
 </ol>
-<h2>How to check it worked</h2>
+<h2 id="s5">How to check it worked</h2>
 <ul>
 <li>Each card's <code>runner.log</code> shows its job <strong>exited with code 0</strong> and saved a final checkpoint.</li>
 <li>The script's output shows <strong>no HOLD and no FINISH</strong> left in any queue folder.</li>
@@ -54,7 +56,7 @@
 <li>At the next power on (Server 1 first, then Server 2), every card starts training by itself with no crash.</li>
 </ul>
 <p>On my last proven cycle (14 October 2026) the script took 34 seconds on Server 2 and 13 seconds on Server 1. Server 1 answered SSH again 33 seconds after power on, Server 2 after 2 minutes 52 seconds (its firmware is slow to start). All three cards resumed with no crash.</p>
-<h2>What to do if it fails</h2>
+<h2 id="s6">What to do if it fails</h2>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -91,11 +93,13 @@
 </tr>
 </tbody>
 </table></div>
-<h2>Failure history (written down so it is not repeated)</h2>
+<h2 id="s7">Failure history (written down so it is not repeated)</h2>
 <ul>
 <li><strong>A leftover FINISH crashed the first job after every boot.</strong> The original script removed HOLD at the end but not FINISH. On a card with no job running, nothing used up the FINISH file, so it survived the shutdown. At the next boot the trainer saw FINISH before its first step, skipped training, then crashed reading a value only a training step creates. The runner restarted it, so no data was lost, but every card wasted one restart.</li>
 <li><strong>The fix (14 October 2026):</strong> two lines in the script so it removes FINISH as well as HOLD, the execute bit set, and a change to the trainer so a FINISH that was already there at start is ignored. I proved the crash first on one card with the old version (the "before"), then proved the fix on the same card, then ran a full shutdown and boot cycle on both servers.</li>
 <li><strong>Every changed file was fingerprinted</strong> with a checksum before and after, and the old copies were kept beside the new ones so I could roll back.</li>
-</ul>
+</ul></div></div>
+<p class="back back-end"><a href="../../index.html#docs">Back to documents</a></p>
 </main>
+<div class="wrap"><footer><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M30 30V52A22 22 0 1 1 52 30Z" fill="var(--ds-ink)"/><path d="M36 36H58A22 22 0 0 1 36 58Z" fill="var(--ds-mark-q)"/></svg><span>A personal project, not employment. Network addresses, serial numbers, passwords and other private details are left out of this page on purpose.</span></footer></div>
 </body></html>
