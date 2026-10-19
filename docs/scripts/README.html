@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scripts</title><meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/theme.css"></head>
+<body>
+<nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic49-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic49-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic50-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic50-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic51-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic51-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a></div></nav>
+<main class="doc">
+<h1>Scripts</h1>
+<p>Three small scripts I use to check my lab servers. All three <strong>only read</strong>: none of them changes a setting, switches a device or writes anywhere except the log file you point them at. They are simplified, general versions of the tools I run on my own machines.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Script</th>
+<th>What it does</th>
+<th>Needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>node_health.py</code></td>
+<td>One-screen health check of a Linux server: processor and NVMe drive temperatures, disk use, ZFS pool health and NVIDIA graphics card status</td>
+<td>Python 3.8+, standard library only. Uses <code>zpool</code> and <code>nvidia-smi</code> if they are installed.</td>
+</tr>
+<tr>
+<td><code>plug_power_logger.py</code></td>
+<td>Reads live power from TP-Link Tapo smart plugs (each plug has its own energy meter) and appends one row per plug to a CSV file every few seconds</td>
+<td>Python 3.9+, <code>python-kasa</code> 0.7.7</td>
+</tr>
+<tr>
+<td><code>drive_map.py</code></td>
+<td>Lists every drive by serial number, with today's <code>/dev</code> name and the stable <code>/dev/disk/by-id</code> path to use in commands</td>
+<td>Python 3.8+, <code>lsblk</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2>node_health.py</h2>
+<pre><code>python3 node_health.py           # readable text
+python3 node_health.py --json    # for another tool to read
+</code></pre>
+<p>The limits at the top (<code>CPU_WARN_C</code>, <code>GPU_WARN_C</code> and so on) are example values. Set them from your own hardware's data sheets. <code>MOUNTS</code> is the list of mount points to check.</p>
+<p>Exit code: <strong>0</strong> all OK, <strong>1</strong> at least one warning, <strong>2</strong> at least one failure (for example a ZFS pool that is not ONLINE, or <code>nvidia-smi</code> not answering). That makes it easy to call from a scheduled job or a monitoring tool.</p>
+<h2>plug_power_logger.py</h2>
+<ol>
+<li>Install the library: <code>python3 -m pip install "python-kasa==0.7.7"</code></li>
+<li>Open the script and fill in <code>PLUGS</code>: a name you choose for each plug and its address on your network. They ship as <code>"set-me"</code> and the script refuses to run until you change them.</li>
+<li>Put your Tapo account login in environment variables, <strong>not</strong> in the file:
+   <code>export TAPO_USERNAME="set-me"
+   export TAPO_PASSWORD="set-me"</code></li>
+<li>Run <code>python3 plug_power_logger.py</code>. Stop with Ctrl+C.</li>
+</ol>
+<p>Output columns: <code>time_local, plug, watts, today_wh, month_wh, status</code>. A plug that does not answer gets a row with an empty reading and a status, <strong>never a zero</strong>, so a gap in the data shows as a gap.</p>
+<p><strong>Why the read-only guard matters:</strong> a smart plug can switch power off. If that plug feeds a server, one wrong request turns the server off mid-job. Every request this script sends passes through a check that refuses anything that is not a <code>get_</code> query. If the guard cannot be fitted (for example on a different library version), the script stops instead of running unguarded.</p>
+<h2>drive_map.py</h2>
+<pre><code>python3 drive_map.py                          # every disk
+python3 drive_map.py --serial WD-XXXXXXXX     # one drive only
+</code></pre>
+<p>Use it before any drive work (see <code>../runbooks/drive-replacement.md</code>). Copy the stable path that contains the serial into your commands, and read the serial on the drive's own label before you pull it.</p>
+</main>
+</body></html>
