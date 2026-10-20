@@ -327,3 +327,8 @@ label.optout .sw:disabled{opacity:.45;cursor:not-allowed}
 label.optout .sw:focus-visible{outline:2px solid var(--ds-focus);outline-offset:3px}
 #nocount-note{margin:0 0 8px;color:var(--ds-muted);font-size:14px}
 @media (prefers-reduced-motion:reduce){label.optout .sw::after{transition:none}}
+
+/* Footer: the Privacy link to visits.html, kept low key (added 21 Oct 2026). A real link, reachable by keyboard and
+   there with scripts off; the muted colour meets 4.5 to 1 on both themes; the padding makes a 24 px tall target. */
+footer a.privacy{display:block;width:fit-content;margin-top:4px;padding:6px 0;font-size:12px;line-height:1.2;color:var(--ds-muted);text-decoration:none}
+footer a.privacy:hover,footer a.privacy:focus-visible{text-decoration:underline}
