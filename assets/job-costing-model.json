@@ -1,0 +1,1093 @@
+{
+ "version": "1.0",
+ "as_at": "2026-10-20",
+ "params": {
+  "tariff_c": 36.08,
+  "alt_tariff_c": 24.057,
+  "hours": 7000,
+  "life": 3,
+  "residual": 0.3,
+  "money": 0.07,
+  "upkeep": 0.03,
+  "cooling": 0.0,
+  "fx": 1.4337,
+  "wpt": 0.75,
+  "tpp": 20,
+  "keep": 0.86,
+  "sw_gain": 0.18,
+  "wait_gain": 1.0,
+  "basis": 1,
+  "extra": 0.1
+ },
+ "param_meta": {
+  "tariff_c": [
+   "Electricity, cents a kWh",
+   "O",
+   "the lab's flat rate with GST, September 2026",
+   6,
+   48,
+   0.5
+  ],
+  "alt_tariff_c": [
+   "Cheaper flat plan, cents a kWh",
+   "S",
+   "cheapest flat market offer seen for the Energex area, 20 Oct 2026",
+   6,
+   48,
+   0.5
+  ],
+  "hours": [
+   "Hours a year each machine works",
+   "E",
+   "the lab's own planning figure; measured use in the 15 days to 14 Oct was about 730 hours a year",
+   200,
+   8760,
+   10
+  ],
+  "life": [
+   "Years of useful life",
+   "E",
+   "planning figure; the tax office's effective life for desktops and servers is 4 years",
+   2,
+   6,
+   1
+  ],
+  "residual": [
+   "Resale value at the end, share of cost",
+   "E",
+   "planning figure",
+   0,
+   0.6,
+   0.05
+  ],
+  "money": [
+   "Cost of money a year",
+   "E",
+   "planning figure, on the average amount tied up",
+   0,
+   0.15,
+   0.01
+  ],
+  "upkeep": [
+   "Upkeep a year, share of cost",
+   "E",
+   "planning figure",
+   0,
+   0.1,
+   0.01
+  ],
+  "cooling": [
+   "Extra power for air conditioning",
+   "E",
+   "0 when the room is not cooled; 15 to 28 percent when it is (from registered air conditioner ratings)",
+   0,
+   0.3,
+   0.01
+  ],
+  "fx": [
+   "A$ per US$",
+   "S",
+   "Reserve Bank of Australia, 19 Oct 2026 (A$1 = US$0.6975)",
+   1.2,
+   1.7,
+   0.01
+  ],
+  "wpt": [
+   "Words per token",
+   "S",
+   "OpenAI's guidance for English text, about 0.75",
+   0.5,
+   1,
+   0.01
+  ],
+  "tpp": [
+   "Training tokens per parameter",
+   "S",
+   "compute optimal training, Hoffmann et al. 2022 (Chinchilla)",
+   10,
+   100,
+   1
+  ],
+  "keep": [
+   "Share of written text kept after checks",
+   "M",
+   "the lab's six hour generation bench, 16 Oct 2026 (86 percent on the PCs)",
+   0.4,
+   1,
+   0.01
+  ],
+  "sw_gain": [
+   "Speed gain from FP8 training",
+   "E",
+   "published gains at about 0.5B parameters are 18 to 27 percent, a cautious case 10 percent; untested here",
+   0,
+   0.4,
+   0.01
+  ],
+  "wait_gain": [
+   "Price fall after waiting a year",
+   "E",
+   "1.0 means no change; at most about 1.14 if card prices fall back to launch prices; no new consumer cards are expected before 2028",
+   1,
+   1.14,
+   0.01
+  ],
+  "basis": [
+   "Cost of today's machines",
+   "E",
+   "1: what they would sell for (indicative resale, 20 Aug 2026), the cost of keeping rather than selling them; 0: replacement cost new",
+   0,
+   1,
+   1
+  ],
+  "extra": [
+   "GST and extras on rented cards and API tokens",
+   "S",
+   "GST is 10 percent on overseas digital services; storage while stopped and data transfer cost more",
+   0,
+   0.5,
+   0.01
+  ]
+ },
+ "assets": {
+  "pc1": {
+   "name": "Server 1 (two RTX 5080)",
+   "cost": 15197.0,
+   "resale": 8901.64,
+   "share": 1.0,
+   "kind": "E",
+   "basis": "replacement estimate of 20 Aug 2026, displays left out; recorded cash for its parts is incomplete"
+  },
+  "pc2": {
+   "name": "Server 2 (RTX 4080)",
+   "cost": 8850.0,
+   "resale": 4222.95,
+   "share": 1.0,
+   "kind": "E",
+   "basis": "replacement estimate of 20 Aug 2026"
+  },
+  "pc3": {
+   "name": "Storage server (RTX 3070, twelve drives)",
+   "cost": 9741.0,
+   "resale": 3687.45,
+   "share": 1.0,
+   "kind": "E",
+   "basis": "replacement estimate of 20 Aug 2026; holds the training data; a lab service, not a training machine"
+  },
+  "net": {
+   "name": "10 gigabit network",
+   "cost": 2457.0,
+   "resale": 1202.5,
+   "share": 1.0,
+   "kind": "E",
+   "basis": "replacement estimate of 20 Aug 2026"
+  },
+  "m5": {
+   "name": "MacBook Pro M5 Max",
+   "cost": 12799.0,
+   "resale": 8959.3,
+   "share": 0.25,
+   "kind": "E",
+   "basis": "a laptop also used outside the lab; a quarter of its time is charged to the lab"
+  }
+ },
+ "capex": {
+  "pc5": 11097.55,
+  "pc5l": 9626.73,
+  "pc5x": 26146.73,
+  "pc5p": 30472.73,
+  "pc5r": 10006.73,
+  "wait": 11097.55,
+  "swap": 2299.0
+ },
+ "rent": {
+  "5080": 0.336,
+  "5090": 0.604,
+  "h100": 3.99
+ },
+ "api": {
+  "open8b": [
+   0.02,
+   0.04
+  ],
+  "gptoss": [
+   0.018,
+   0.09
+  ],
+  "haikub": [
+   0.05,
+   0.25
+  ],
+  "haiku": [
+   0.1,
+   0.5
+  ]
+ },
+ "lanes": {
+  "pretrain_537M": {
+   "base": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 67794,
+    "kw": 1.3075,
+    "k": "M"
+   },
+   "sw": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 67794,
+    "mult": [
+     "1+sw_gain"
+    ],
+    "kw": 1.3075,
+    "k": "E",
+    "what": "FP8 training on today's cards"
+   },
+   "power": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 67794,
+    "kw": 1.3075,
+    "alt": 1,
+    "k": "M"
+   },
+   "pc5": {
+    "t": "add",
+    "cx": "pc5",
+    "tps": 48014,
+    "kw": 0.8226,
+    "k": "C"
+   },
+   "pc5l": {
+    "t": "add",
+    "cx": "pc5l",
+    "tps": 48014,
+    "kw": 0.8226,
+    "k": "C"
+   },
+   "pc5x": {
+    "t": "add",
+    "cx": "pc5x",
+    "tps": 86425.2,
+    "kw": 1.2875478260869566,
+    "k": "E"
+   },
+   "pc5p": {
+    "t": "add",
+    "cx": "pc5p",
+    "tps": 72021.0,
+    "kw": 0.75,
+    "k": "E"
+   },
+   "pc5r": {
+    "t": "add",
+    "cx": "pc5r",
+    "tps": 31209.100000000002,
+    "kw": 0.8,
+    "k": "E"
+   },
+   "wait": {
+    "t": "add",
+    "cx": "wait",
+    "cxdiv": "wait_gain",
+    "tps": 48014,
+    "kw": 0.8226,
+    "k": "E"
+   },
+   "swap": {
+    "t": "add",
+    "cx": "swap",
+    "tps": 24007.0,
+    "kw": 0.48,
+    "k": "E",
+    "what": "one more RTX 5080 island at a Server 1 card's speed; about 0.48 kW extra: the card (297 to 331 W measured at a Server 1 card) plus the storage server itself (about 0.15 kW), which must stay on"
+   },
+   "rent": {
+    "t": "rent",
+    "card": "5080",
+    "n": 2,
+    "tps": 48014,
+    "k": "C"
+   },
+   "h100": {
+    "t": "rent",
+    "card": "h100",
+    "n": 1,
+    "tps": 144060.0,
+    "k": "E"
+   }
+  },
+  "pretrain_1B": {
+   "base": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 28691,
+    "kw": 1.0807,
+    "k": "M"
+   },
+   "sw": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 28691,
+    "mult": [
+     "1+sw_gain"
+    ],
+    "kw": 1.0807,
+    "k": "E",
+    "what": "FP8 training on today's cards"
+   },
+   "power": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 28691,
+    "kw": 1.0807,
+    "alt": 1,
+    "k": "M"
+   },
+   "pc5": {
+    "t": "add",
+    "cx": "pc5",
+    "tps": 19984,
+    "kw": 0.6552,
+    "k": "C"
+   },
+   "pc5l": {
+    "t": "add",
+    "cx": "pc5l",
+    "tps": 19984,
+    "kw": 0.6552,
+    "k": "C"
+   },
+   "pc5x": {
+    "t": "add",
+    "cx": "pc5x",
+    "tps": 35971.200000000004,
+    "kw": 1.0255304347826086,
+    "k": "E"
+   },
+   "pc5p": {
+    "t": "add",
+    "cx": "pc5p",
+    "tps": 29976.0,
+    "kw": 0.75,
+    "k": "E"
+   },
+   "pc5r": {
+    "t": "add",
+    "cx": "pc5r",
+    "tps": 12989.6,
+    "kw": 0.8,
+    "k": "E"
+   },
+   "wait": {
+    "t": "add",
+    "cx": "wait",
+    "cxdiv": "wait_gain",
+    "tps": 19984,
+    "kw": 0.6552,
+    "k": "E"
+   },
+   "swap": {
+    "t": "add",
+    "cx": "swap",
+    "tps": 9992.0,
+    "kw": 0.48,
+    "k": "E",
+    "what": "one more RTX 5080 island at a Server 1 card's speed; about 0.48 kW extra: the card (297 to 331 W measured at a Server 1 card) plus the storage server itself (about 0.15 kW), which must stay on"
+   },
+   "rent": {
+    "t": "rent",
+    "card": "5080",
+    "n": 2,
+    "tps": 19984,
+    "k": "C"
+   },
+   "h100": {
+    "t": "rent",
+    "card": "h100",
+    "n": 1,
+    "tps": 77360.22,
+    "k": "E"
+   }
+  },
+  "datagen": {
+   "base": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 329.0,
+    "in": 24626,
+    "kw": 1.157,
+    "k": "M",
+    "what": "one request at a time per card, Qwen3-8B 4-bit, the 16 Oct bench (329 kept tokens a second)"
+   },
+   "sw": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 1774.8999999999999,
+    "mult": [
+     "keep"
+    ],
+    "in": 24626,
+    "kw": 1.157,
+    "k": "E",
+    "what": "8 requests at once per card (vLLM): speed measured with gpt-oss-20b, power and keep rate from the Qwen3-8B bench; batched Qwen3-8B not yet measured"
+   },
+   "power": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      1
+     ],
+     [
+      "pc2",
+      1
+     ]
+    ],
+    "tps": 329.0,
+    "in": 24626,
+    "kw": 1.157,
+    "alt": 1,
+    "k": "M"
+   },
+   "pc5": {
+    "t": "add",
+    "cx": "pc5",
+    "tps": 1281.6,
+    "mult": [
+     "keep"
+    ],
+    "in": 16594,
+    "kw": 0.7375,
+    "k": "E"
+   },
+   "pc5l": {
+    "t": "add",
+    "cx": "pc5l",
+    "tps": 1281.6,
+    "mult": [
+     "keep"
+    ],
+    "in": 16594,
+    "kw": 0.7375,
+    "k": "E"
+   },
+   "pc5x": {
+    "t": "add",
+    "cx": "pc5x",
+    "tps": 2114.64,
+    "mult": [
+     "keep"
+    ],
+    "in": 28146,
+    "kw": 1.0581521739130435,
+    "k": "E"
+   },
+   "pc5p": {
+    "t": "add",
+    "cx": "pc5p",
+    "tps": 1057.32,
+    "mult": [
+     "keep"
+    ],
+    "in": 14855,
+    "kw": 0.6,
+    "k": "E"
+   },
+   "wait": {
+    "t": "add",
+    "cx": "wait",
+    "cxdiv": "wait_gain",
+    "tps": 1281.6,
+    "mult": [
+     "keep"
+    ],
+    "in": 16594,
+    "kw": 0.7375,
+    "k": "E"
+   },
+   "rent": {
+    "t": "rent",
+    "card": "5080",
+    "n": 2,
+    "tps": 1281.6,
+    "mult": [
+     "keep"
+    ],
+    "in": 16594,
+    "k": "E"
+   },
+   "h100": {
+    "t": "price",
+    "usd_in": 0.0175,
+    "usd_out": 0.175,
+    "kept": 1,
+    "k": "E",
+    "what": "about US$0.15 to 0.20 per million output tokens for 7B to 8B models on a rented H100"
+   },
+   "api": {
+    "t": "price",
+    "api": "open8b",
+    "kept": 1,
+    "k": "S",
+    "what": "Llama 3.1 8B at DeepInfra, US$0.02 in and US$0.04 out per million"
+   },
+   "api2": {
+    "t": "price",
+    "api": "haikub",
+    "kept": 1,
+    "k": "S",
+    "what": "Claude Haiku 5.5 in batch mode, US$0.05 in and US$0.25 out per million"
+   }
+  },
+  "inference": {
+   "base": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      0.5
+     ]
+    ],
+    "tps": 186.7,
+    "in": 9488,
+    "kw": 0.429,
+    "k": "M",
+    "what": "one user at a time on one RTX 5080"
+   },
+   "sw": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      0.5
+     ]
+    ],
+    "tps": 640.8,
+    "in": 9488,
+    "kw": 0.429,
+    "k": "M",
+    "what": "8 users at once on one RTX 5080"
+   },
+   "power": {
+    "t": "own",
+    "assets": [
+     [
+      "pc1",
+      0.5
+     ]
+    ],
+    "tps": 186.7,
+    "in": 9488,
+    "kw": 0.429,
+    "alt": 1,
+    "k": "M"
+   },
+   "m5": {
+    "t": "own",
+    "assets": [
+     [
+      "m5",
+      1
+     ]
+    ],
+    "tps": 247.0,
+    "in": 3220,
+    "kw": 0.173,
+    "k": "M",
+    "what": "8 users at once on the M5 Max"
+   },
+   "pc5": {
+    "t": "add",
+    "cx": "pc5",
+    "cxs": 0.5,
+    "tps": 640.8,
+    "in": 9488,
+    "kw": 0.429,
+    "k": "E"
+   },
+   "pc5l": {
+    "t": "add",
+    "cx": "pc5l",
+    "cxs": 0.5,
+    "tps": 640.8,
+    "in": 9488,
+    "kw": 0.429,
+    "k": "E"
+   },
+   "pc5x": {
+    "t": "add",
+    "cx": "pc5x",
+    "cxs": 0.5,
+    "tps": 1057.32,
+    "in": 14073,
+    "kw": 0.6155217391304348,
+    "k": "E"
+   },
+   "pc5p": {
+    "t": "add",
+    "cx": "pc5p",
+    "cxs": 1.0,
+    "tps": 1057.32,
+    "in": 14855,
+    "kw": 0.6,
+    "k": "E"
+   },
+   "wait": {
+    "t": "add",
+    "cx": "wait",
+    "cxs": 0.5,
+    "cxdiv": "wait_gain",
+    "tps": 640.8,
+    "in": 9488,
+    "kw": 0.429,
+    "k": "E"
+   },
+   "rent": {
+    "t": "rent",
+    "card": "5080",
+    "n": 1,
+    "tps": 640.8,
+    "in": 9488,
+    "k": "E"
+   },
+   "rent90": {
+    "t": "rent",
+    "card": "5090",
+    "n": 1,
+    "tps": 1057.32,
+    "in": 14073,
+    "k": "E"
+   },
+   "api": {
+    "t": "price",
+    "api": "gptoss",
+    "k": "S",
+    "what": "gpt-oss-20b, cheapest route, US$0.018 in and US$0.09 out per million"
+   },
+   "api2": {
+    "t": "price",
+    "api": "haiku",
+    "k": "S",
+    "what": "Claude Haiku 5.5, US$0.10 in and US$0.50 out per million"
+   }
+  }
+ },
+ "big": {
+  "today": {
+   "label": "Today's machines",
+   "rows": {
+    "0.537": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "tps": 67794,
+     "kw": 1.3075,
+     "k": "M"
+    },
+    "1": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "tps": 28691,
+     "kw": 1.0807,
+     "k": "M"
+    },
+    "2": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ]
+     ],
+     "tps": 6234,
+     "kw": 0.5295,
+     "k": "M"
+    },
+    "3": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ]
+     ],
+     "tps": 4069,
+     "kw": 0.5234,
+     "k": "M"
+    }
+   }
+  },
+  "merge": {
+   "label": "Plus the split and offload merge (software)",
+   "rows": {
+    "0.537": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "tps": 67794,
+     "kw": 1.3075,
+     "k": "M"
+    },
+    "1": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "tps": 28691,
+     "kw": 1.0807,
+     "k": "M"
+    },
+    "2": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "tps": 17999,
+     "kw": 1.0756,
+     "k": "C"
+    },
+    "3": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ]
+     ],
+     "tps": 4069,
+     "kw": 0.5234,
+     "k": "M"
+    }
+   }
+  },
+  "pc5merge": {
+   "label": "Plus PC5 and the merge",
+   "rows": {
+    "0.537": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "cx": "pc5",
+     "tps": 115809,
+     "kw": 2.1301,
+     "k": "C"
+    },
+    "1": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "cx": "pc5",
+     "tps": 48676,
+     "kw": 1.7359,
+     "k": "C"
+    },
+    "2": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ],
+      [
+       "pc2",
+       1
+      ]
+     ],
+     "cx": "pc5",
+     "tps": 24233,
+     "kw": 1.6050999999999997,
+     "k": "C"
+    },
+    "3": {
+     "t": "own",
+     "assets": [
+      [
+       "pc1",
+       1
+      ]
+     ],
+     "cx": "pc5",
+     "tps": 8138,
+     "kw": 1.0468,
+     "k": "C"
+    }
+   }
+  },
+  "pro": {
+   "label": "One RTX PRO 6000 build alone",
+   "rows": {
+    "0.537": {
+     "t": "add",
+     "cx": "pc5p",
+     "tps": 72021.0,
+     "kw": 0.75,
+     "k": "E"
+    },
+    "1": {
+     "t": "add",
+     "cx": "pc5p",
+     "tps": 38675.277,
+     "kw": 0.75,
+     "k": "E"
+    },
+    "2": {
+     "t": "add",
+     "cx": "pc5p",
+     "tps": 19337.6385,
+     "kw": 0.75,
+     "k": "E"
+    },
+    "3": {
+     "t": "add",
+     "cx": "pc5p",
+     "tps": 12891.759,
+     "kw": 0.75,
+     "k": "E"
+    }
+   }
+  },
+  "h100": {
+   "label": "Rent an H100",
+   "rows": {
+    "0.537": {
+     "t": "rent",
+     "card": "h100",
+     "n": 1,
+     "tps": 144060.0,
+     "k": "E"
+    },
+    "1": {
+     "t": "rent",
+     "card": "h100",
+     "n": 1,
+     "tps": 77360.22,
+     "k": "E"
+    },
+    "2": {
+     "t": "rent",
+     "card": "h100",
+     "n": 1,
+     "tps": 38680.11,
+     "k": "E"
+    },
+    "3": {
+     "t": "rent",
+     "card": "h100",
+     "n": 1,
+     "tps": 25786.74,
+     "k": "E"
+    }
+   }
+  }
+ },
+ "scen": {
+  "base": [
+   "Today",
+   "Today's machines (baseline)",
+   "the machines as they are, measured"
+  ],
+  "sw": [
+   "Software",
+   "A software change, A$0",
+   "no purchase: a change in how the machines are used"
+  ],
+  "power": [
+   "Power plan",
+   "A cheaper electricity plan, A$0",
+   "the cheapest flat plan seen for this area, 24.057 cents a kWh"
+  ],
+  "pc5": [
+   "PC5 plan",
+   "PC5 as planned",
+   "the final parts list of 6 Oct 2026 (cards from an online store), plus a A$1,089 system drive; not bought"
+  ],
+  "pc5l": [
+   "PC5 local",
+   "PC5, cards at the lowest local price",
+   "the same parts and drive, both RTX 5080 cards at the lowest local price, A$2,299 each"
+  ],
+  "pc5x": [
+   "PC5 5090",
+   "PC5 with two RTX 5090",
+   "two 32 GB cards at A$10,499 each and a 1,600 W supply"
+  ],
+  "pc5p": [
+   "PC5 PRO",
+   "PC5 with one RTX PRO 6000",
+   "one 96 GB card at A$25,444"
+  ],
+  "pc5r": [
+   "PC5 AMD",
+   "PC5 with two Radeon AI PRO R9700",
+   "two 32 GB AMD cards at A$2,489 each; AMD's own software, untested here"
+  ],
+  "swap": [
+   "Swap 3070",
+   "Swap the storage server's RTX 3070 for an RTX 5080",
+   "one RTX 5080 at A$2,299 in the storage server; the server must stay on while it trains (it was on about 16 percent of hours, 7 to 19 Oct); the 3070 runs its desktop virtual machine; power supply and slot unchecked"
+  ],
+  "wait": [
+   "Wait",
+   "Wait 12 months, then PC5",
+   "the same parts a year later; no new consumer cards are expected before 2028, so only a price fall helps, and the year adds no capacity"
+  ],
+  "rent": [
+   "Rent 5080",
+   "Rent RTX 5080 cards",
+   "a marketplace's median price for the same card, US$0.336 an hour"
+  ],
+  "h100": [
+   "Rent H100",
+   "Rent an H100 (cloud)",
+   "a data centre card at a common list price, US$3.99 an hour"
+  ],
+  "rent90": [
+   "Rent 5090",
+   "Rent an RTX 5090",
+   "a marketplace's median price, US$0.604 an hour"
+  ],
+  "m5": [
+   "M5 Max",
+   "The M5 Max laptop",
+   "serving from the laptop, measured"
+  ],
+  "api": [
+   "API",
+   "Buy tokens from an API",
+   "a provider's price per million tokens"
+  ],
+  "api2": [
+   "API, frontier",
+   "Buy tokens from a frontier model",
+   "a stronger, dearer model's price per million tokens"
+  ]
+ }
+}
