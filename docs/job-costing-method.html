@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Job costing method: what a token costs in my home lab</title><meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E.f{fill:%2325272B}.q{fill:%231F3F86}%40media (prefers-color-scheme:dark){.f{fill:%23F1E9D8}.q{fill:%2386A6E2}}%3C/style%3E%3Cpath class='f' d='M30 30V52A22 22 0 1 1 52 30Z'/%3E%3Cpath class='q' d='M36 36H58A22 22 0 0 1 36 58Z'/%3E%3C/svg%3E">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="stylesheet" href="../assets/theme.css">
+<script src="../assets/theme-toggle.js" defer></script></head>
+<body>
+<nav class="topnav" aria-label="Site"><div class="in"><a class="home" href="../index.html" aria-label="Home" title="Home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic1-home-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M10 21v-6h4v6" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic1-home-m)"><path d="M4 11l8-7 8 7v10H4z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Home</span></a><a href="../index.html#docs" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic2-journal-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M9 8h7M9 12h7M9 16h4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#ic2-journal-m)"><rect x="5" y="3" width="15" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M5 7H3M5 12H3M5 17H3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Documents</span></a><a href="../rack-and-cabling.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="ic3-switch-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.5 12h2v2h-2zM9.5 12h2v2h-2zM13.5 12h2v2h-2z" fill="none" stroke="#000000" stroke-width="2.4"/><circle cx="18.5" cy="13" r="1" fill="#000000"/></mask></defs><g mask="url(#ic3-switch-m)"><rect x="2" y="9" width="20" height="8" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g><path d="M12 9V5M8 5h8" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Rack and cabling</span></a><a href="../network.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="4.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><circle cx="19.5" cy="12" r="2.5" fill="currentColor" stroke="currentColor" stroke-width="2.4"/><path d="M7 10.5h10M7 13.5h10" fill="none" stroke="currentColor" stroke-width="2.4"/></svg><span>Network</span></a><a href="../lab-3d.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-lab3d-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M5.8 8.6L12 12l6.2-3.4M12 12v7.4" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-lab3d-m)"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>3D lab</span></a><a href="../job-costing.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" stroke-linecap="butt" stroke-linejoin="miter"><defs><mask id="icn-jobcost-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#FFFFFF"/><path d="M8.5 7.5h7" fill="none" stroke="#000000" stroke-width="2.4"/><path d="M8.5 12.5h2M13.5 12.5h2M8.5 17h2M13.5 17h2" fill="none" stroke="#000000" stroke-width="2.4"/></mask></defs><g mask="url(#icn-jobcost-m)"><rect x="5" y="3" width="14" height="18" fill="currentColor" stroke="currentColor" stroke-width="2.4"/></g></svg><span>Job costing</span></a></div></nav>
+<main class="doc">
+<p class="back"><a href="../job-costing.html">Back to the job costing</a></p>
+<header class="dochead"><h1>Job costing method: what a token costs in my home lab</h1><div class="intro"><p><strong>What:</strong> how the job costing page works out the cost of a token in my home lab: the jobs, the cost pools, the formulas, the assumptions and their sources, the period statements and their checks.
+<strong>When:</strong> prices as at 20 October 2026; model version 1.0.</p></div></header>
+<div class="docgrid"><nav class="toc" aria-label="On this page"><p class="toc-h">On this page</p><ol><li><a href="#s1">1. The jobs being costed</a></li><li><a href="#s2">2. Cost pools</a></li><li><a href="#s3">3. Formulas</a></li><li><a href="#s4">4. Kinds of number</a></li><li><a href="#s5">5. Assumptions</a></li><li><a href="#s6">6. Results at the defaults</a></li><li><a href="#s7">7. Period statements, 7 to 19 October 2026</a></li><li><a href="#s8">8. Checks</a></li><li><a href="#s9">9. Fixed asset register</a></li><li><a href="#s10">10. Limits</a></li><li><a href="#s11">11. Sources</a></li></ol></nav><div class="docbody"><h2 id="s1">1. The jobs being costed</h2>
+<p>Three jobs, each costed like a job in a factory:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Unit of output</th>
+<th>Machines today</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Training a language model</td>
+<td>tokens trained (537M model; 1B in 8-bit)</td>
+<td>Server 1 (two RTX 5080) and Server 2 (RTX 4080)</td>
+</tr>
+<tr>
+<td>Writing training data</td>
+<td>kept tokens: written and passed the checks (86 percent kept)</td>
+<td>Server 1 and Server 2</td>
+</tr>
+<tr>
+<td>Answering questions</td>
+<td>tokens served (gpt-oss-20b)</td>
+<td>one RTX 5080 in Server 1, or the M5 Max laptop</td>
+</tr>
+</tbody></table></div>
+<p>Each job is costed today and under up to 15 alternatives: software changes, a cheaper power plan, the planned third training server (PC5, parked: test first, nothing bought), a card swap in the storage server, renting cards, and buying tokens from an API.</p>
+<h2 id="s2">2. Cost pools</h2>
+<ul>
+<li><strong>Machine cost:</strong> depreciation down to an end value, the cost of money tied up, and upkeep. Today&#39;s machines are costed at what they would sell for (the indicative resale estimate of 20 Aug 2026), which is the cost of keeping rather than selling them; new parts at their price.</li>
+<li><strong>Electricity:</strong> wall power measured by smart plugs, times the flat rate with GST.</li>
+<li><strong>Rent or API price:</strong> a seller&#39;s price, converted at the Reserve Bank rate, plus 10 percent GST and extras. Storage while stopped and data transfer are not included.</li>
+<li><strong>Lab services</strong> (storage server, network, monitoring) are a separate cost pool and are not spread over the tokens.</li>
+</ul>
+<h2 id="s3">3. Formulas</h2>
+<ul>
+<li>Machine cost an hour = machine cost × (depreciation down to the resale value over the life + cost of money on the average amount tied up + upkeep) ÷ hours a year. At the defaults: cost × 0.3088 a year ÷ 7,000 hours.</li>
+<li>Electricity an hour = kW × cents a kWh × (1 + cooling).</li>
+<li>Rent an hour = cards × US$ price × A$ per US$ × (1 + GST and extras).</li>
+<li>Cost per token = cost an hour ÷ tokens an hour.</li>
+<li>Whole lab after a change = (today&#39;s cost an hour + the added cost an hour) ÷ (today&#39;s tokens an hour + the added tokens an hour). The reference is today&#39;s machines for training, and today&#39;s machines batched for writing data and answering questions.</li>
+<li>Per word = per token ÷ 0.75; per parameter = 20 × the cost per token, for a compute optimal run.</li>
+</ul>
+<p>Upgrades are shown two ways: the added capacity alone, and the whole lab after the change. Bridges (waterfalls) run from today to the whole lab after the change, part by part: machine cost, electricity, rent, and speed.</p>
+<h2 id="s4">4. Kinds of number</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Measured</td>
+<td>measured on the lab by a meter, sensor or log</td>
+</tr>
+<tr>
+<td>My record</td>
+<td>my own record: a bill, invoice or order</td>
+</tr>
+<tr>
+<td>Quoted</td>
+<td>a seller&#39;s price on a date</td>
+</tr>
+<tr>
+<td>Published</td>
+<td>a published figure: a benchmark, price list or paper</td>
+</tr>
+<tr>
+<td>Estimate</td>
+<td>an estimate: an assumption, said so</td>
+</tr>
+<tr>
+<td>Computed</td>
+<td>computed from the other figures</td>
+</tr>
+</tbody></table></div>
+<h2 id="s5">5. Assumptions</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Kind</th>
+<th>Source or note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Electricity, cents a kWh</td>
+<td>36.08 c</td>
+<td>My record</td>
+<td>the lab&#39;s flat rate with GST, September 2026</td>
+</tr>
+<tr>
+<td>Cheaper flat plan, cents a kWh</td>
+<td>24.057 c</td>
+<td>Published</td>
+<td>cheapest flat market offer seen for the Energex area, 20 Oct 2026</td>
+</tr>
+<tr>
+<td>Hours a year each machine works</td>
+<td>7,000</td>
+<td>Estimate</td>
+<td>the lab&#39;s own planning figure; measured use in the 15 days to 14 Oct was about 730 hours a year</td>
+</tr>
+<tr>
+<td>Years of useful life</td>
+<td>3 years</td>
+<td>Estimate</td>
+<td>planning figure; the tax office&#39;s effective life for desktops and servers is 4 years</td>
+</tr>
+<tr>
+<td>Resale value at the end, share of cost</td>
+<td>30%</td>
+<td>Estimate</td>
+<td>planning figure</td>
+</tr>
+<tr>
+<td>Cost of money a year</td>
+<td>7%</td>
+<td>Estimate</td>
+<td>planning figure, on the average amount tied up</td>
+</tr>
+<tr>
+<td>Upkeep a year, share of cost</td>
+<td>3%</td>
+<td>Estimate</td>
+<td>planning figure</td>
+</tr>
+<tr>
+<td>Extra power for air conditioning</td>
+<td>0%</td>
+<td>Estimate</td>
+<td>0 when the room is not cooled; 15 to 28 percent when it is (from registered air conditioner ratings)</td>
+</tr>
+<tr>
+<td>A$ per US$</td>
+<td>1.4337</td>
+<td>Published</td>
+<td>Reserve Bank of Australia, 19 Oct 2026 (A$1 = US$0.6975)</td>
+</tr>
+<tr>
+<td>Words per token</td>
+<td>0.75</td>
+<td>Published</td>
+<td>OpenAI&#39;s guidance for English text, about 0.75</td>
+</tr>
+<tr>
+<td>Training tokens per parameter</td>
+<td>20</td>
+<td>Published</td>
+<td>compute optimal training, Hoffmann et al. 2022 (Chinchilla)</td>
+</tr>
+<tr>
+<td>Share of written text kept after checks</td>
+<td>86%</td>
+<td>Measured</td>
+<td>the lab&#39;s six hour generation bench, 16 Oct 2026 (86 percent on the PCs)</td>
+</tr>
+<tr>
+<td>Speed gain from FP8 training</td>
+<td>18%</td>
+<td>Estimate</td>
+<td>published gains at about 0.5B parameters are 18 to 27 percent, a cautious case 10 percent; untested here</td>
+</tr>
+<tr>
+<td>Price fall after waiting a year</td>
+<td>1.00</td>
+<td>Estimate</td>
+<td>1.0 means no change; at most about 1.14 if card prices fall back to launch prices; no new consumer cards are expected before 2028</td>
+</tr>
+<tr>
+<td>Cost of today&#39;s machines</td>
+<td>what they would sell for</td>
+<td>Estimate</td>
+<td>1: what they would sell for (indicative resale, 20 Aug 2026), the cost of keeping rather than selling them; 0: replacement cost new</td>
+</tr>
+<tr>
+<td>GST and extras on rented cards and API tokens</td>
+<td>10%</td>
+<td>Published</td>
+<td>GST is 10 percent on overseas digital services; storage while stopped and data transfer cost more</td>
+</tr>
+</tbody></table></div>
+<h2 id="s6">6. Results at the defaults</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Today</th>
+<th>Best A$0 change</th>
+<th>PC5 as planned, added (whole lab after)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Training, 537M, A$ per billion tokens</td>
+<td>A$4.31</td>
+<td>A$3.65 (FP8), A$3.66 (power plan)</td>
+<td>A$4.55 (A$4.41)</td>
+</tr>
+<tr>
+<td>Training, 1B, A$ per billion tokens</td>
+<td>A$9.38</td>
+<td>A$7.95 (FP8)</td>
+<td>A$10.09 (A$9.67)</td>
+</tr>
+<tr>
+<td>Writing data, A$ per million kept tokens</td>
+<td>A$0.84</td>
+<td>A$0.18 (batched)</td>
+<td>A$0.19 (A$0.19)</td>
+</tr>
+<tr>
+<td>Answering, A$ per million tokens</td>
+<td>A$0.52</td>
+<td>A$0.15 (8 users at once)</td>
+<td>A$0.17 (A$0.16)</td>
+</tr>
+</tbody></table></div>
+<p>At measured use (about 730 hours a year instead of 7,000) training on today&#39;s machines costs A$24.68 per billion tokens. PC5 beats renting the same cards above 4,492 hours a year (51 percent of the year).</p>
+<h2 id="s7">7. Period statements, 7 to 19 October 2026</h2>
+<p>The lab cost A$258.89 in 13 days. By function, idle capacity (machine cost of planned hours not worked) was A$152.72, 59 percent.</p>
+<p>Training at standard cost was A$19.88 against A$155.06 actual. Standard is the cost at the planned hours and the measured speed; actual charges all of Server 1 and Server 2&#39;s cost for the 13 days to the work done.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Variance</th>
+<th>A$</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Idle capacity (machine cost of planned hours not worked)</td>
+<td>+128.90</td>
+<td>adverse</td>
+</tr>
+<tr>
+<td>Speed (log medians about 1.1 percent above the standard)</td>
+<td>-0.12</td>
+<td>favourable</td>
+</tr>
+<tr>
+<td>Electricity with no job attached</td>
+<td>+6.40</td>
+<td>adverse</td>
+</tr>
+</tbody></table></div>
+<p>About 4.32 billion tokens were trained after the held out loss went flat: an abnormal loss of about A$18.60 at standard cost.</p>
+<h2 id="s8">8. Checks</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Left</th>
+<th>Right</th>
+<th>Difference</th>
+<th>Finding</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PC5 parts list</td>
+<td>18 lines added up: A$10,008.55</td>
+<td>stated total: A$10,008.55</td>
+<td>0.00</td>
+<td>classification error, no change to the total</td>
+</tr>
+<tr>
+<td>Parts invoice, 21 Jul 2025</td>
+<td>five items added up: A$4,013.74</td>
+<td>invoice total: A$4,013.74</td>
+<td>0.00</td>
+<td>agreed</td>
+</tr>
+<tr>
+<td>Electricity rate</td>
+<td>32.8 cents before GST, times 1.1: 36.08 c</td>
+<td>rate used: 36.08 c</td>
+<td>0.00</td>
+<td>agreed</td>
+</tr>
+<tr>
+<td>Server 1 and Server 2 electricity, 7 to 19 Oct</td>
+<td>smart plug meters: 49.202 kWh</td>
+<td>jobs plus the remainder: 49.202 kWh</td>
+<td>0.000</td>
+<td>a finding: 36 percent of the metered electricity had no job attached</td>
+</tr>
+<tr>
+<td>Training tokens, 29 Sep to 14 Oct</td>
+<td>log lines, millions: 7,307.1 M</td>
+<td>the job&#39;s saved counters, millions: 7,274.7 M</td>
+<td>32.4</td>
+<td>timing difference, explained</td>
+</tr>
+<tr>
+<td>Check: capacity model against the measured speed</td>
+<td>model, tokens a second: 67,795</td>
+<td>measured cluster: 67,794</td>
+<td>1</td>
+<td>model check, not a reconciliation</td>
+</tr>
+</tbody></table></div>
+<h2 id="s9">9. Fixed asset register</h2>
+<p>Deemed cost is the fair value, what each machine would sell for (20 Aug 2026), used in place of the price paid because most purchase invoices are incomplete. Depreciation runs over 3 years to a 30 percent end value. Tax depreciation is not shown: it starts from the price paid, needs assessable income, and the tax office&#39;s effective lives are 4 years for desktops and servers, 2 for laptops and 5 for network gear.</p>
+<h2 id="s10">10. Limits</h2>
+<ul>
+<li>Most speeds for cards I do not own are estimates from published figures, marked as such.</li>
+<li>Tokens are counted raw: with more islands training one shared model, each token is worth a little less (about 90 percent at 4 islands, 85 percent at 6, published estimate).</li>
+<li>The M5&#39;s hourly cost is its full cost per hour of use.</li>
+<li>These are findings, not purchase advice.</li>
+</ul>
+<h2 id="s11">11. Sources</h2>
+<ul>
+<li><a href="https://www.aer.gov.au/system/files/2026-05/AER%20-%20Final%20determination%20-%20Default%20market%20offer%202026%E2%80%9327.pdf">AER, default market offer 2026-27, final determination</a></li>
+<li><a href="https://cdr.energymadeeasy.gov.au/alinta/cds-au/v1/energy/plans/ALI1164888MRE1%40EME">Energy Made Easy plan register: the cheapest flat plan seen</a></li>
+<li><a href="https://www.rba.gov.au/statistics/tables/csv/f11.1-data.csv">Reserve Bank of Australia, table F11.1 exchange rates</a></li>
+<li><a href="https://www.staticice.com.au/cgi-bin/search.cgi?q=rtx%205080%2016gb%20-laptop%20-block%20-mobile%20-notebook&links=200">staticICE, RTX 5080 prices</a></li>
+<li><a href="https://www.staticice.com.au/cgi-bin/search.cgi?q=rtx%205090%2032gb%20-laptop%20-block%20-mobile%20-notebook&links=200">staticICE, RTX 5090 prices</a></li>
+<li><a href="https://www.staticice.com.au/cgi-bin/search.cgi?q=rtx%20pro%206000&links=200">staticICE, RTX PRO 6000 prices</a></li>
+<li><a href="https://www.staticice.com.au/cgi-bin/search.cgi?q=r9700&links=200">staticICE, Radeon AI PRO R9700 prices</a></li>
+<li><a href="https://www.scorptec.com.au/product/graphics-cards/nvidia/126954-ne75080019t2-gb2035s">Scorptec, RTX 5080 at the lowest local price</a></li>
+<li><a href="https://vast.ai/pricing/gpu/RTX-5090">Vast.ai, marketplace prices (RTX 5090 page)</a></li>
+<li><a href="https://docs.vast.ai/documentation/reference/billing">Vast.ai, billing: storage while stopped</a></li>
+<li><a href="https://www.runpod.io/pricing">RunPod pricing</a></li>
+<li><a href="https://lambda.ai/pricing">Lambda pricing</a></li>
+<li><a href="https://deepinfra.com/pricing">DeepInfra pricing</a></li>
+<li><a href="https://openrouter.ai/openai/gpt-oss-20b">OpenRouter, gpt-oss-20b</a></li>
+<li><a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic, Claude API pricing (Haiku 5.5, prompts up to 100,000 tokens)</a></li>
+<li><a href="https://www.ato.gov.au/businesses-and-organisations/business-bulletins-newsroom/final-guidance-effective-life-of-assets">ATO, final guidance on effective life</a></li>
+<li><a href="https://www.legislation.gov.au/F2025L01097">Effective life determination 2025</a></li>
+<li><a href="https://ar5iv.labs.arxiv.org/html/2203.15556">Hoffmann et al. 2022, compute optimal training (Chinchilla)</a></li>
+<li><a href="https://arxiv.org/pdf/2001.08361">Kaplan et al. 2020, scaling laws</a></li>
+<li><a href="https://github.com/karpathy/llm.c/discussions/481">llm.c, GPT-2 reproduction</a></li>
+<li><a href="https://arxiv.org/pdf/2512.15306">LLMQ, lower precision pretraining on consumer cards</a></li>
+<li><a href="https://arxiv.org/html/2311.08105v3">DiLoCo, low communication training</a></li>
+<li><a href="https://epoch.ai/publications/trends-in-gpu-price-performance">Epoch AI, trends in GPU price performance</a></li>
+<li><a href="https://epoch.ai/data-insights/ai-inference-price-trends">Epoch AI, inference price trends</a></li>
+<li>My electricity bill, Sep 2026 (private)</li>
+<li>My lab&#39;s measurements: meters, logs and benches (private)</li>
+</ul>
+</div></div>
+<p class="back back-end"><a href="../index.html#docs">Back to documents</a></p>
+</main>
+<div class="wrap"><footer><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M30 30V52A22 22 0 1 1 52 30Z" fill="var(--ds-ink)"/><path d="M36 36H58A22 22 0 0 1 36 58Z" fill="var(--ds-mark-q)"/></svg><span>A personal project, not employment. Network addresses, serial numbers, passwords and other private details are left out of this page on purpose.</span></footer></div>
+</body></html>
