@@ -1,10 +1,15 @@
 /* Theme switch: Auto (follows the device), Light (cream paper) or Dark.
-   The choice is kept in this browser only; with no choice the device setting decides. */
+   The choice is kept in this browser only; with no choice the site is Light, whatever the device's setting.
+   Auto is kept as a choice of its own ("auto") and marks the page with data-auto, so the dark colours
+   follow the device; the script in each page's head applies the choice before the page draws. */
 (function () {
   var root = document.documentElement, KEY = 'theme';
   function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
-  function save(v) { try { if (v === 'auto') localStorage.removeItem(KEY); else localStorage.setItem(KEY, v); } catch (e) {} }
-  function apply(v) { if (v === 'light' || v === 'dark') root.setAttribute('data-theme', v); else root.removeAttribute('data-theme'); }
+  function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  function apply(v) {
+    if (v === 'auto') { root.removeAttribute('data-theme'); root.setAttribute('data-auto', ''); }
+    else { root.removeAttribute('data-auto'); root.setAttribute('data-theme', v === 'dark' ? 'dark' : 'light'); }
+  }
   var NS = 'http://www.w3.org/2000/svg';
   var ICONS = {
     auto: '<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/>',
@@ -27,7 +32,7 @@
     bar.appendChild(g); mark();
   }
   function mark() {
-    var cur = root.getAttribute('data-theme') || 'auto';
+    var cur = root.getAttribute('data-theme') || (root.hasAttribute('data-auto') ? 'auto' : 'light');
     var bs = document.querySelectorAll('.themesw button');
     for (var i = 0; i < bs.length; i++) bs[i].setAttribute('aria-pressed', String(bs[i].dataset.v === cur));
   }

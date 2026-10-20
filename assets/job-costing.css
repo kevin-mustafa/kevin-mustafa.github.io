@@ -3,7 +3,7 @@
 
 /* page colour roles: machine cost (navy), electricity (copper), rent or API price (muted grey) */
 :root{--jc-mach:var(--ds-accent);--jc-elec:var(--ds-copper);--jc-rent:#A8A49B;--jc-tot:var(--ds-ink);--jc-step:var(--ds-support);--jc-s3:var(--sky-training);--jc-s4:var(--sky-storage)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--jc-rent:#6F7276}}
+@media (prefers-color-scheme: dark){:root[data-auto]:not([data-theme="light"]){--jc-rent:#6F7276}}
 :root[data-theme="dark"]{--jc-rent:#6F7276}
 
 .jc-app [hidden]{display:none!important}

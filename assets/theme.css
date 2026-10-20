@@ -26,9 +26,10 @@
   --line:var(--ds-line); --navy:var(--ds-accent); --navy-soft:var(--ds-tint); --accent:var(--ds-highlight);
   --copper:var(--ds-copper); --grey:var(--ds-line-strong); --metal:var(--ds-line); --rackbg:var(--ds-support);
 }
-/* Theme roles, dark */
+/* Theme roles, dark: chosen Dark, or Auto (html[data-auto], set by the script in each page's head) on a device
+   set to dark. With no choice, and with scripts off, the site is Light. */
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
+  :root[data-auto]:not([data-theme="light"]){
     color-scheme:dark;
     --ds-canvas:#1C2026; --ds-panel:#252930; --ds-ink:#F1E9D8; --ds-muted:#A6A9AE;
     --ds-line:#383C43; --ds-line-strong:#6F7276; --ds-accent:#86A6E2; --ds-on-accent:#1C2026;
@@ -252,7 +253,7 @@ main.doc+.wrap footer{margin-top:24px}
 
 /* Build timeline: 3D skyline, flat heatmap, milestones */
 :root{--sky-hardware:#85592C;--sky-network:#1F3F86;--sky-storage:#9A7B1F;--sky-training:#2E7468;--sky-documentation:#6F7276}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sky-hardware:#D8A66E;--sky-network:#86A6E2;--sky-storage:#D9BE6A;--sky-training:#6FB8A8;--sky-documentation:#A6A9AE}}
+@media (prefers-color-scheme: dark){:root[data-auto]:not([data-theme="light"]){--sky-hardware:#D8A66E;--sky-network:#86A6E2;--sky-storage:#D9BE6A;--sky-training:#6FB8A8;--sky-documentation:#A6A9AE}}
 :root[data-theme="dark"]{--sky-hardware:#D8A66E;--sky-network:#86A6E2;--sky-storage:#D9BE6A;--sky-training:#6FB8A8;--sky-documentation:#A6A9AE}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .sky .figs{margin-top:20px}
@@ -312,10 +313,8 @@ main.doc+.wrap footer{margin-top:24px}
 .sky-note{margin-top:14px;font-size:13px;color:var(--ds-muted)}
 @media (max-width:640px){.sky-stage{height:360px}.sky-hint{display:none}}
 
-/* Visit log: the footer notice, the home page count and the opt-out switch on visits.html (added 20 Oct 2026) */
-footer .vlog{display:block;margin-top:8px}
-footer .vlog a{white-space:nowrap;margin-right:14px}
-footer .vlog a:last-child{margin-right:0}
+/* Visit log: the home page count and the opt-out switch on visits.html (added 20 Oct 2026; the footer notice
+   was taken out on 21 Oct 2026) */
 footer .vcount{display:block;margin-top:8px;font:600 12.5px/1.4 var(--ds-mono);color:var(--ds-ink)}
 footer .vcount[hidden]{display:none}
 label.optout{display:flex;align-items:center;gap:14px;margin:16px 0 8px;padding:14px 16px;min-height:56px;background:var(--ds-panel);border-left:2px solid var(--ds-accent);max-width:44em;cursor:pointer}
