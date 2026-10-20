@@ -311,3 +311,20 @@ main.doc+.wrap footer{margin-top:24px}
 .sky-ms em::before{content:"";width:9px;height:9px;background:var(--a)}
 .sky-note{margin-top:14px;font-size:13px;color:var(--ds-muted)}
 @media (max-width:640px){.sky-stage{height:360px}.sky-hint{display:none}}
+
+/* Visit log: the footer notice, the home page count and the opt-out switch on visits.html (added 20 Oct 2026) */
+footer .vlog{display:block;margin-top:8px}
+footer .vlog a{white-space:nowrap;margin-right:14px}
+footer .vlog a:last-child{margin-right:0}
+footer .vcount{display:block;margin-top:8px;font:600 12.5px/1.4 var(--ds-mono);color:var(--ds-ink)}
+footer .vcount[hidden]{display:none}
+label.optout{display:flex;align-items:center;gap:14px;margin:16px 0 8px;padding:14px 16px;min-height:56px;background:var(--ds-panel);border-left:2px solid var(--ds-accent);max-width:44em;cursor:pointer}
+label.optout b{font-weight:700}
+label.optout .sw{appearance:none;-webkit-appearance:none;flex:none;width:48px;height:28px;margin:0;border:2px solid var(--ds-ink);background:var(--ds-canvas);position:relative;cursor:pointer}
+label.optout .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:var(--ds-ink);transition:left .15s}
+label.optout .sw:checked{background:var(--ds-accent);border-color:var(--ds-accent)}
+label.optout .sw:checked::after{left:23px;background:var(--ds-on-accent)}
+label.optout .sw:disabled{opacity:.45;cursor:not-allowed}
+label.optout .sw:focus-visible{outline:2px solid var(--ds-focus);outline-offset:3px}
+#nocount-note{margin:0 0 8px;color:var(--ds-muted);font-size:14px}
+@media (prefers-reduced-motion:reduce){label.optout .sw::after{transition:none}}
