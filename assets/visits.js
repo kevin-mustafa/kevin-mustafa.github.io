@@ -87,7 +87,10 @@
   }
 
   var gpc = navigator.globalPrivacyControl === true;
-  var home = document.getElementById("vcount");
+  // The home page's view message asks the log service to add the visit count to its answer (c: 1), as it did
+  // while the page showed the count; the count is no longer shown (21 Oct 2026), so that part of the answer goes
+  // unused. The home page is known by its address: GitHub Pages serves it at /, /index and /index.html.
+  var home = /^\/(index(\.html)?)?$/.test(location.pathname);
   var s;   // this page load
 
   function start() {
@@ -108,11 +111,6 @@
     send(body, true).then(function (r) {
       if (mine !== s) return;
       mine.tier = r && r.tier ? r.tier : "none";
-      if (home && r && typeof r.n === "number" && /^\d{4}-\d{2}-\d{2}$/.test(r.since || "")) {
-        var p = r.since.split("-"), mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][Number(p[1]) - 1];
-        home.textContent = r.n.toLocaleString("en-AU") + (r.n === 1 ? " visit" : " visits") + " since " + Number(p[2]) + " " + mon + " " + p[0];
-        home.hidden = false;
-      }
     });
   }
   function theme() { return document.documentElement.getAttribute("data-theme") || "auto"; }

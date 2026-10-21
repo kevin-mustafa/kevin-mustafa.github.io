@@ -313,10 +313,8 @@ main.doc+.wrap footer{margin-top:24px}
 .sky-note{margin-top:14px;font-size:13px;color:var(--ds-muted)}
 @media (max-width:640px){.sky-stage{height:360px}.sky-hint{display:none}}
 
-/* Visit log: the home page count and the opt-out switch on visits.html (added 20 Oct 2026; the footer notice
-   was taken out on 21 Oct 2026) */
-footer .vcount{display:block;margin-top:8px;font:600 12.5px/1.4 var(--ds-mono);color:var(--ds-ink)}
-footer .vcount[hidden]{display:none}
+/* Visit log: the opt-out switch on visits.html (added 20 Oct 2026; the footer notice and the home page count
+   were taken out on 21 Oct 2026) */
 label.optout{display:flex;align-items:center;gap:14px;margin:16px 0 8px;padding:14px 16px;min-height:56px;background:var(--ds-panel);border-left:2px solid var(--ds-accent);max-width:44em;cursor:pointer}
 label.optout b{font-weight:700}
 label.optout .sw{appearance:none;-webkit-appearance:none;flex:none;width:48px;height:28px;margin:0;border:2px solid var(--ds-ink);background:var(--ds-canvas);position:relative;cursor:pointer}
